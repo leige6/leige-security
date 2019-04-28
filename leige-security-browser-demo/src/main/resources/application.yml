@@ -1,6 +1,8 @@
 server:
   port: 8060
-
+  servlet:
+    session:
+      timeout: 100 #最少一分钟
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -15,9 +17,12 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   session:
-    store-type: none
+    store-type: redis
 leige:
   security:
     browser:
       loginPage: /leige-signIn.html
       loginType: JSON
+      session:
+        maxSessionsPreventsLogin: false
+      signOutUrl: /leige-signOut-demo.html
