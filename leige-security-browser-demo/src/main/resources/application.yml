@@ -20,4 +20,4 @@ leige:
   security:
     browser:
       loginPage: /leige-signIn.html
-      loginType: REDIRECT
+      loginType: JSON

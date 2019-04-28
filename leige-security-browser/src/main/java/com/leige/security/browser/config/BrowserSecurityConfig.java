@@ -2,6 +2,7 @@ package com.leige.security.browser.config;
 
 
 import com.leige.security.browser.MyPasswordEncoder;
+import com.leige.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leige.security.core.properties.SecurityConstants;
 import com.leige.security.core.properties.SecurityProperties;
 import com.leige.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -51,6 +52,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfigs;
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         // org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer.tokenRepository
@@ -66,7 +70,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //http.httpBasic()
-        http.apply(validateCodeSecurityConfig)
+        http.apply(validateCodeSecurityConfig) .and()
+                .apply(smsCodeAuthenticationSecurityConfigs)
                 .and()
                 .formLogin()
        .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL).loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
