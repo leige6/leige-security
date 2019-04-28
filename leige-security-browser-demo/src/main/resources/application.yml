@@ -4,12 +4,12 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/leige_security?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-    username: leige
-    password: 201314
+    url: jdbc:mysql://192.168.174.128:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false
+    username: root
+    password: 123456
   redis:
     database: 0
-    host: localhost
+    host: 192.168.174.128
     port: 6379
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
