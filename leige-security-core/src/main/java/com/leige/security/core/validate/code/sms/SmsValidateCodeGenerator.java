@@ -10,7 +10,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 图片验证码工具类
+ * 短信验证码工具类
  * @author zhuqiang
  * @version 1.0.1 2018/8/4 11:30
  * @date 2018/8/4 11:30
