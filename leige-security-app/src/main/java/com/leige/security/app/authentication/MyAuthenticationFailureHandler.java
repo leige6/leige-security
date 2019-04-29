@@ -1,11 +1,10 @@
-package com.leige.security.browser.handler;
+package com.leige.security.app.authentication;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leige.security.core.properties.LoginType;
 import com.leige.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

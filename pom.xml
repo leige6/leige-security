@@ -44,6 +44,7 @@
         <module>leige-security-browser</module>
         <module>leige-security-browser-demo</module>
         <module>leige-security-app</module>
+        <module>leige-security-app-demo</module>
          <!-- <module>leige-security-sso-demo</module>
          <module>leige-security-demo-browser</module>-->
     </modules>
