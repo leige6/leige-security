@@ -1,0 +1,20 @@
+server:
+  port: 8061
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.174.128:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false
+    username: root
+    password: 123456
+  redis:
+    database: 0
+    host: 192.168.174.128
+    port: 6379
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+security:
+  oauth2:
+    client:
+      client-id: leige
+      client-secret: 123456
