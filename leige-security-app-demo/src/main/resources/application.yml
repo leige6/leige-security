@@ -24,7 +24,7 @@ leige:
       clients[0]:
         clientId: S001
         clientSecret: 123456
-        accessTokenValiditySeconds: 3000
+        accessTokenValiditySeconds: 100
         authorizedGrantTypes[0]: refresh_token
         authorizedGrantTypes[1]: password
         scopes[0]: all

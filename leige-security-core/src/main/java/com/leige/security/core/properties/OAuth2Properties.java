@@ -7,7 +7,7 @@ package com.leige.security.core.properties;
  */
 public class OAuth2Properties {
     private OAuth2ClientProperties[] clients = {};
-    private String jwtSigningKey = "mrcode";
+    private String jwtSigningKey = "leige";
 
     public OAuth2ClientProperties[] getClients() {
         return clients;

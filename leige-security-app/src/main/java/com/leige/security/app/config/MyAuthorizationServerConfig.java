@@ -12,9 +12,14 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableAuthorizationServer
@@ -33,9 +38,27 @@ public class MyAuthorizationServerConfig extends AuthorizationServerConfigurerAd
     @Autowired(required = false)
     public TokenStore tokenStore;
 
+    @Autowired(required = false)
+    // 只有当使用jwt的时候才会有该对象
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+    @Autowired(required = false)
+    private TokenEnhancer jwtTokenEnhancer;
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(this.authenticationManager).userDetailsService(userDetailsService).tokenStore(tokenStore);
+        if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
+            TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+            List<TokenEnhancer> enhancers = new ArrayList<>();
+            enhancers.add(jwtTokenEnhancer);
+            enhancers.add(jwtAccessTokenConverter);
+            enhancerChain.setTokenEnhancers(enhancers);
+            // 一个处理链，先添加，再转换
+            endpoints
+                    .tokenEnhancer(enhancerChain)
+                    .accessTokenConverter(jwtAccessTokenConverter);
+        }
     }
 
     @Override//配置这个就配置文件中关于clentid和secret就不起作用了

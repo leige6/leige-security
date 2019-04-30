@@ -2,19 +2,28 @@ package com.leige.security.demo.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.leige.security.core.properties.SecurityProperties;
 import com.leige.security.demo.dto.User;
 import com.leige.security.demo.dto.UserQueryCondition;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +35,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+   
     //    @Autowired
 //    private ProviderSignInUtils providerSignInUtils;
 
 
+    @Autowired
+    private SecurityProperties securityProperties;
 
     @GetMapping
     @JsonView(User.UserSimpleView.class)
@@ -93,5 +105,23 @@ public class UserController {
 
 
 
+    @GetMapping("/me")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails, Authentication authentication, HttpServletRequest request) throws UnsupportedEncodingException {
+//        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+        // Authorization : bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiaW1vb2MiLCJ1c2VyX25hbWUiOiJhZG1pbiIsImp0aSI6ImRjYzVmODIwLWUwNmYtNDYyNi1hYmMyLTAyZTljZjdkZjhmOCIsImNsaWVudF9pZCI6Im15aWQiLCJzY29wZSI6WyJhbGwiXX0.nYFBXcLBN3WNef0sooNxS0s6CaEleDGfjZh7xtTEqf4
+        // 增加了jwt之后，获取传递过来的token
+        // 当然这里只是其中一种的 token的传递方法，自己要根据具体情况分析
+        String authorization = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(authorization, "bearer ");
+        log.info("jwt token", token);
+        String jwtSigningKey = securityProperties.getOauth2().getJwtSigningKey();
+        // 生成的时候使用的是 org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
+        // 源码里面把signingkey变成utf8了
+        // JwtAccessTokenConverter类，解析出来是一个map
+        // 所以这个自带的JwtAccessTokenConverter对象也是可以直接用来解析的
+        byte[] bytes = jwtSigningKey.getBytes("utf-8");
+        Claims body = Jwts.parser().setSigningKey(bytes).parseClaimsJws(token).getBody();
 
+        return body;
+    }
 }

@@ -1,11 +1,18 @@
 package com.leige.security.app.config;
 
 
+import com.leige.security.app.jwt.LeigeJwtTokenEnhancer;
+import com.leige.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
@@ -19,15 +26,15 @@ public class TokenStoreConfig {
     private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
-    //@ConditionalOnProperty(prefix = "imooc.security.oauth2", name = "tokenStore", havingValue = "redis")
+    @ConditionalOnProperty(prefix = "leige.security.oauth2", name = "tokenStore", havingValue = "redis")
     public TokenStore tokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
 
-   /* @Configuration
+    @Configuration
     // matchIfMissing ：当tokenStore没有值的时候是否生效
     // 当tokenStore = jwt的时候或则tokenStore没有配置的时候使用下面的配置
-    @ConditionalOnProperty(prefix = "imooc.security.oauth2", name = "tokenStore", havingValue = "jwt", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "leige.security.oauth2", name = "tokenStore", havingValue = "jwt", matchIfMissing = true)
     public static class JwtTokenConfig {
         @Autowired
         private SecurityProperties securityProperties;
@@ -51,7 +58,7 @@ public class TokenStoreConfig {
         // 先不纠结这个问题了。就这样吧。也就是封装程度的问题
         @ConditionalOnBean(TokenEnhancer.class)
         public TokenEnhancer jwtTokenEnhancer() {
-            return new ImoocJwtTokenEnhancer();
+            return new LeigeJwtTokenEnhancer();
         }
-    }*/
+    }
 }
