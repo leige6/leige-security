@@ -45,7 +45,8 @@ public class MyResourcesServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfigs;
 
-
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -55,7 +56,7 @@ public class MyResourcesServerConfig extends ResourceServerConfigurerAdapter {
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenticationFailureHandler);
         //http.httpBasic()
-        http/*.apply(validateCodeSecurityConfig) .and()*/
+        http.apply(validateCodeSecurityConfig) .and()
                 .apply(smsCodeAuthenticationSecurityConfigs)
                 .and()
                 .formLogin()

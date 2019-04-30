@@ -51,7 +51,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
         C codeInSession = (C) validateCodeRepository.get(request, type);
         String codeInRequest;
         try {
-            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), type.getParamNameOnValidate());
+            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), type.getParamNameOnValidate()).trim();
         } catch (ServletRequestBindingException e) {
             throw new ValidateCodeException("获取验证码的值失败");
         }

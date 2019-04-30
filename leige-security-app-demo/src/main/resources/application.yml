@@ -13,8 +13,22 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-security:
-  oauth2:
-    client:
-      client-id: leige
-      client-secret: 123456
+#security:
+    #  oauth2:
+      #   client:
+      #     client-id: leige
+    #   client-secret: 123456
+leige:
+  security:
+    oauth2:
+      clients[0]:
+        clientId: S001
+        clientSecret: 123456
+        accessTokenValiditySeconds: 3000
+        authorizedGrantTypes[0]: refresh_token
+        authorizedGrantTypes[1]: password
+        scopes[0]: all
+      clients[1]:
+        clientId: S002
+        clientSecret: 201314
+        accessTokenValiditySeconds: 3000
